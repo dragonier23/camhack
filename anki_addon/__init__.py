@@ -1,13 +1,15 @@
 from aqt import mw
-from aqt.qt import QAction, QKeySequence, QLabel, QPixmap, QWidget, QVBoxLayout, Qt, QApplication
+from aqt.qt import QAction, QKeySequence, QLabel, QPixmap, QWidget, QVBoxLayout, Qt, QApplication, QTimer
 from aqt.utils import showInfo
 import os
 import random
 
+from .window_monitor import get_active_window_info
+
 # Keep references to the windows so they are not garbage-collected
 _image_windows = []
 
-def open_images(input_file: str = "a.png", spawn_count: int = 5):
+def open_images(*args, input_file: str = "a.png", spawn_count: int = 5):
     """Open a small, safe number of windows showing `a.png` located next to this file.
     Each window is placed at a random location on the user's screen.
     """
@@ -20,7 +22,9 @@ def open_images(input_file: str = "a.png", spawn_count: int = 5):
     spawn_count = spawn_count
     for i in range(spawn_count):
         w = QWidget()
-        w.setWindowTitle(f"Image {i+1}")
+        # Make window stay on top of other windows
+        w.setWindowFlags(w.windowFlags() | Qt.WindowType.WindowStaysOnTopHint)
+        w.setWindowTitle(f"Anki {i+1}")
         layout = QVBoxLayout(w)
         label = QLabel()
         pix = QPixmap(image_path)
@@ -126,3 +130,42 @@ if app is not None:
     except Exception:
         # some bindings or environments may not expose the signal; ignore in that case
         pass
+
+
+# Window monitoring: detect when user switches to a non-Anki window
+_previous_window_handle = None
+_monitor_timer = None
+
+def _check_window_change():
+    """Called periodically to check if the active window changed to something outside Anki."""
+    global _previous_window_handle
+    try:
+        current = get_active_window_info()
+        current_handle = current.get('handle')
+        
+        # Check if window changed
+        if _previous_window_handle is not None and current_handle != _previous_window_handle:
+            # Window changed - check if it's NOT Anki
+            title = current.get('title', '').lower()
+            # Anki's process is typically 'anki.exe' on Windows
+            if 'anki' not in title:
+                open_images()
+        
+        _previous_window_handle = current_handle
+    except Exception as e:
+        # Silent fail - don't interrupt Anki's operation
+        pass
+
+# Initialize the monitor
+try:
+    initial_window = get_active_window_info()
+    _previous_window_handle = initial_window.get('handle')
+    
+    # Create a timer that checks every 500ms
+    _monitor_timer = QTimer()
+    _monitor_timer.timeout.connect(_check_window_change)
+    _monitor_timer.start(500)  # Check every 500ms
+except Exception:
+    # If initialization fails, just don't start monitoring
+    pass
+

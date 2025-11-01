@@ -10,7 +10,7 @@ from .sound_player import SoundPlayer
 _addon_dir = os.path.dirname(__file__)
 image_opener = ImageOpener(_addon_dir)
 sound_player = SoundPlayer(_addon_dir)
-window_monitor = WindowMonitor(on_non_anki_switch=image_opener.open_images)
+window_monitor = WindowMonitor(on_blacklisted_switch=image_opener.open_images)
 
 
 # Menu actions: open on Alt+C

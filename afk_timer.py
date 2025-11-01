@@ -137,7 +137,7 @@ class AFKTimer:
         
         # Path to the judging image
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        self.image_path = os.path.join(script_dir, "assets", "judging.jpeg")
+        self.image_path = os.path.join(script_dir, "assets", "images", "judging.jpeg")
 
     def on_key(self, key):
         with self.lock:

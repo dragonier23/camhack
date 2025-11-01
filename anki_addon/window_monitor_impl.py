@@ -1,10 +1,145 @@
 import os
+import sys
+import platform
+import subprocess
 
 def get_active_window_info():
-    if os.name == 'nt':
+    """Cross-platform function to get active window information.
+    
+    Returns:
+        Dictionary with handle, title, class_name, process_id, and process_name
+    """
+    system = platform.system()
+    
+    if system == 'Windows':
         return get_active_window_info_nt()
+    elif system == 'Linux':
+        return get_active_window_info_linux()
+    elif system == 'Darwin':
+        return get_active_window_info_mac()
     else:
-        raise NotImplementedError("Active window info retrieval not implemented for this OS.")
+        raise NotImplementedError(f"Active window info retrieval not implemented for {system}.")
+    
+def get_active_window_info_linux():
+    """Get information about the currently active window on Linux using xdotool.
+    
+    Returns:
+        Dictionary with handle, title, class_name, process_id, and process_name
+    """
+    try:
+        # Get active window ID
+        wid_out = subprocess.check_output(["xdotool", "getactivewindow"], 
+                                         stderr=subprocess.DEVNULL)
+        wid = wid_out.decode().strip()
+        
+        # Get window title
+        try:
+            title_out = subprocess.check_output(["xdotool", "getwindowname", wid], 
+                                               stderr=subprocess.DEVNULL)
+            title = title_out.decode(errors='ignore').strip()
+        except:
+            title = "Unknown"
+        
+        # Get window class name
+        try:
+            class_out = subprocess.check_output(["xdotool", "getwindowclassname", wid], 
+                                               stderr=subprocess.DEVNULL)
+            class_name = class_out.decode(errors='ignore').strip()
+        except:
+            class_name = "Unknown"
+        
+        # Get process ID
+        try:
+            pid_out = subprocess.check_output(["xdotool", "getwindowpid", wid], 
+                                             stderr=subprocess.DEVNULL)
+            pid_value = int(pid_out.decode().strip())
+        except:
+            pid_value = 0
+        
+        # Get process name from /proc filesystem
+        process_name = "Unknown"
+        if pid_value > 0:
+            try:
+                with open(f"/proc/{pid_value}/comm", "r") as f:
+                    process_name = f.read().strip()
+            except:
+                # Fallback: try to get from cmdline
+                try:
+                    with open(f"/proc/{pid_value}/cmdline", "r") as f:
+                        cmdline = f.read()
+                        if cmdline:
+                            process_name = os.path.basename(cmdline.split('\0')[0])
+                except:
+                    pass
+        
+        return {
+            "handle": int(wid) if wid.isdigit() else 0,
+            "title": title,
+            "class_name": class_name,
+            "process_id": pid_value,
+            "process_name": process_name,
+        }
+    except FileNotFoundError:
+        raise RuntimeError("xdotool is not installed. Install with: sudo apt-get install xdotool")
+    except Exception as e:
+        raise RuntimeError(f"Failed to get active window info on Linux: {e}")
+
+
+def get_active_window_info_mac():
+    """Get information about the currently active window on macOS using AppleScript.
+    
+    Returns:
+        Dictionary with handle, title, class_name, process_id, and process_name
+    """
+    try:
+        # Get window title using AppleScript
+        ascript_title = '''tell application "System Events"
+    set frontApp to first application process whose frontmost is true
+    try
+        set winName to value of attribute "AXTitle" of front window of frontApp
+    on error
+        set winName to name of frontApp
+    end try
+    return winName
+end tell'''
+        
+        title_out = subprocess.check_output(["osascript", "-e", ascript_title], 
+                                           stderr=subprocess.DEVNULL)
+        title = title_out.decode(errors='ignore').strip()
+        
+        # Get process name
+        ascript_proc = '''tell application "System Events"
+    get name of first process whose frontmost is true
+end tell'''
+        
+        proc_out = subprocess.check_output(["osascript", "-e", ascript_proc], 
+                                          stderr=subprocess.DEVNULL)
+        process_name = proc_out.decode(errors='ignore').strip()
+        
+        # Get process ID
+        ascript_pid = '''tell application "System Events"
+    get unix id of first process whose frontmost is true
+end tell'''
+        
+        try:
+            pid_out = subprocess.check_output(["osascript", "-e", ascript_pid], 
+                                             stderr=subprocess.DEVNULL)
+            pid_value = int(pid_out.decode().strip())
+        except:
+            pid_value = 0
+        
+        return {
+            "handle": 0,  # macOS doesn't have window handles like Windows
+            "title": title,
+            "class_name": process_name,  # Use process name as class
+            "process_id": pid_value,
+            "process_name": process_name,
+        }
+    except FileNotFoundError:
+        raise RuntimeError("osascript not found. This should be available on macOS by default.")
+    except Exception as e:
+        raise RuntimeError(f"Failed to get active window info on macOS: {e}")
+
     
 def get_active_window_info_nt():
     """Get information about the currently active (foreground) window.

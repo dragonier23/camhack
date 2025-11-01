@@ -50,3 +50,14 @@ if app is not None:
 # Start window monitoring
 window_monitor.start()
 
+# Additional shortcut: Alt+P to open the persistent review window
+altp_action = QAction("Open Persistent Review Window (Alt+P)", mw)
+altp_action.setShortcut(QKeySequence("Alt+P"))
+altp_action.triggered.connect(unclosable_window.open_unclosable_window)
+mw.form.menuTools.addAction(altp_action)
+
+# Menu action to close persistent window (Alt+Shift+U)
+close_unclosable_action = QAction("Close Persistent Review Window", mw)
+close_unclosable_action.setShortcut(QKeySequence("Alt+Shift+U"))
+close_unclosable_action.triggered.connect(unclosable_window.close_unclosable_window)
+mw.form.menuTools.addAction(close_unclosable_action)

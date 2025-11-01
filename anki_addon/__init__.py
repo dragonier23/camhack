@@ -7,9 +7,10 @@ import random
 # Keep references to the windows so they are not garbage-collected
 _image_windows = []
 
+
 def open_images():
     """Open a small, safe number of windows showing `a.png` located next to this file.
-    Each window is placed at a random location within (or near) the Anki main window.
+    Each window is placed at a random location on the user's screen.
     """
     image_path = os.path.join(os.path.dirname(__file__), "a.png")
     if not os.path.exists(image_path):
@@ -17,7 +18,7 @@ def open_images():
         return
 
     # Limit the number of windows to a reasonable value.
-    spawn_count = 50
+    spawn_count = 3
     for i in range(spawn_count):
         w = QWidget()
         w.setWindowTitle(f"Image {i+1}")
@@ -79,11 +80,31 @@ def close_images():
             pass
 
 
-# Menu actions: open on Alt+C, close on Alt+B
+# Menu actions: open on Alt+C
 open_action = QAction("Open Images", mw)
 open_action.setShortcut(QKeySequence("Alt+C"))
 open_action.triggered.connect(open_images)
 mw.form.menuTools.addAction(open_action)
+
+# Play sound action (Alt+B) — use only aqt.sound as requested
+def play_sound():
+    audio_path = os.path.join(os.path.dirname(__file__), "a.mp3")
+    if not os.path.exists(audio_path):
+        showInfo(f"Sound not found: {audio_path}")
+        return
+
+    try:
+        from aqt import sound
+        # Expect Anki's `sound.play(path)` API
+        sound.play(audio_path)
+    except Exception:
+        showInfo("Unable to play sound: `aqt.sound` not available or failed.")
+
+
+play_action = QAction("Play Sound", mw)
+play_action.setShortcut(QKeySequence("Alt+B"))
+play_action.triggered.connect(play_sound)
+mw.form.menuTools.addAction(play_action)
 
 # Instead of a keyboard shortcut to close images, close them when the main Anki
 # window receives focus again. Use QApplication.focusChanged to detect focus shifts.

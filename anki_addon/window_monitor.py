@@ -95,10 +95,20 @@ class WindowMonitor:
         try:
             current = get_active_window_info()
             
+            if current is None:
+                return
+            
             title = current.get('title', '').lower()
             if any(kw in title for kw in self.BLACKLIST):
                 if self.on_blacklisted_switch is not None:
                     self.on_blacklisted_switch()
+        except Exception as e:
+            # Silent fail - don't interrupt Anki's operation
+            # But log for debugging
+            import traceback
+            print(f"Window monitor error: {e}")
+            traceback.print_exc()
+            pass
         except Exception:
             # Silent fail - don't interrupt Anki's operation
             pass

@@ -8,34 +8,41 @@ def get_active_window_info():
     
     Returns:
         Dictionary with handle, title, class_name, process_id, and process_name
+        Returns None if detection fails.
     """
-    system = platform.system()
-    
-    if system == 'Windows':
-        return get_active_window_info_nt()
-    elif system == 'Linux':
-        return get_active_window_info_linux()
-    elif system == 'Darwin':
-        return get_active_window_info_mac()
-    else:
-        raise NotImplementedError(f"Active window info retrieval not implemented for {system}.")
+    try:
+        system = platform.system()
+        
+        if system == 'Windows':
+            return get_active_window_info_nt()
+        elif system == 'Linux':
+            return get_active_window_info_linux()
+        elif system == 'Darwin':
+            return get_active_window_info_mac()
+        else:
+            print(f"Warning: Active window info not implemented for {system}")
+            return None
+    except Exception as e:
+        print(f"Error getting active window info: {e}")
+        return None
     
 def get_active_window_info_linux():
     """Get information about the currently active window on Linux using xdotool.
     
     Returns:
         Dictionary with handle, title, class_name, process_id, and process_name
+        Returns None if detection fails.
     """
     try:
         # Get active window ID
         wid_out = subprocess.check_output(["xdotool", "getactivewindow"], 
-                                         stderr=subprocess.DEVNULL)
+                                         stderr=subprocess.DEVNULL, timeout=1)
         wid = wid_out.decode().strip()
         
         # Get window title
         try:
             title_out = subprocess.check_output(["xdotool", "getwindowname", wid], 
-                                               stderr=subprocess.DEVNULL)
+                                               stderr=subprocess.DEVNULL, timeout=1)
             title = title_out.decode(errors='ignore').strip()
         except:
             title = "Unknown"
@@ -43,7 +50,7 @@ def get_active_window_info_linux():
         # Get window class name
         try:
             class_out = subprocess.check_output(["xdotool", "getwindowclassname", wid], 
-                                               stderr=subprocess.DEVNULL)
+                                               stderr=subprocess.DEVNULL, timeout=1)
             class_name = class_out.decode(errors='ignore').strip()
         except:
             class_name = "Unknown"
@@ -51,7 +58,7 @@ def get_active_window_info_linux():
         # Get process ID
         try:
             pid_out = subprocess.check_output(["xdotool", "getwindowpid", wid], 
-                                             stderr=subprocess.DEVNULL)
+                                             stderr=subprocess.DEVNULL, timeout=1)
             pid_value = int(pid_out.decode().strip())
         except:
             pid_value = 0
@@ -80,9 +87,14 @@ def get_active_window_info_linux():
             "process_name": process_name,
         }
     except FileNotFoundError:
-        raise RuntimeError("xdotool is not installed. Install with: sudo apt-get install xdotool")
+        print("Warning: xdotool is not installed. Install with: sudo apt-get install xdotool")
+        return None
+    except subprocess.TimeoutExpired:
+        print("Warning: xdotool command timed out")
+        return None
     except Exception as e:
-        raise RuntimeError(f"Failed to get active window info on Linux: {e}")
+        print(f"Warning: Failed to get active window info on Linux: {e}")
+        return None
 
 
 def get_active_window_info_mac():
@@ -90,6 +102,7 @@ def get_active_window_info_mac():
     
     Returns:
         Dictionary with handle, title, class_name, process_id, and process_name
+        Returns None if detection fails.
     """
     try:
         # Get window title using AppleScript
@@ -104,7 +117,7 @@ def get_active_window_info_mac():
 end tell'''
         
         title_out = subprocess.check_output(["osascript", "-e", ascript_title], 
-                                           stderr=subprocess.DEVNULL)
+                                           stderr=subprocess.DEVNULL, timeout=1)
         title = title_out.decode(errors='ignore').strip()
         
         # Get process name
@@ -113,7 +126,7 @@ end tell'''
 end tell'''
         
         proc_out = subprocess.check_output(["osascript", "-e", ascript_proc], 
-                                          stderr=subprocess.DEVNULL)
+                                          stderr=subprocess.DEVNULL, timeout=1)
         process_name = proc_out.decode(errors='ignore').strip()
         
         # Get process ID
@@ -123,7 +136,7 @@ end tell'''
         
         try:
             pid_out = subprocess.check_output(["osascript", "-e", ascript_pid], 
-                                             stderr=subprocess.DEVNULL)
+                                             stderr=subprocess.DEVNULL, timeout=1)
             pid_value = int(pid_out.decode().strip())
         except:
             pid_value = 0
@@ -136,9 +149,14 @@ end tell'''
             "process_name": process_name,
         }
     except FileNotFoundError:
-        raise RuntimeError("osascript not found. This should be available on macOS by default.")
+        print("Warning: osascript not found. This should be available on macOS by default.")
+        return None
+    except subprocess.TimeoutExpired:
+        print("Warning: osascript command timed out")
+        return None
     except Exception as e:
-        raise RuntimeError(f"Failed to get active window info on macOS: {e}")
+        print(f"Warning: Failed to get active window info on macOS: {e}")
+        return None
 
     
 def get_active_window_info_nt():

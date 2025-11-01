@@ -7,18 +7,17 @@ import random
 # Keep references to the windows so they are not garbage-collected
 _image_windows = []
 
-
-def open_images():
+def open_images(input_file: str = "a.png", spawn_count: int = 5):
     """Open a small, safe number of windows showing `a.png` located next to this file.
     Each window is placed at a random location on the user's screen.
     """
-    image_path = os.path.join(os.path.dirname(__file__), "a.png")
+    image_path = os.path.join(os.path.dirname(__file__), input_file)
     if not os.path.exists(image_path):
         showInfo(f"Image not found: {image_path}")
         return
 
     # Limit the number of windows to a reasonable value.
-    spawn_count = 3
+    spawn_count = spawn_count
     for i in range(spawn_count):
         w = QWidget()
         w.setWindowTitle(f"Image {i+1}")

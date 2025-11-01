@@ -2,23 +2,21 @@
 """
 afk_timer.py
 
-Cross-platform AFK timer that resets on keyboard input and prints AFK duration
-and active window when the user returns from being idle.
+AFK timer that spawns judging images when you're away from keyboard for more than 5 seconds.
 
 Dependencies:
-  pip install pynput
+  pip install pynput PyQt5
 
 Usage:
   python3 afk_timer.py
 
 Notes:
-  - On macOS the script uses `osascript` to query the frontmost app/window.
-  - On Linux it tries to use `xdotool` to get the active window title; install with
-      sudo apt-get install xdotool
-  - On Windows it uses ctypes to call Win32 APIs.
+  - Spawns multiple windows with judging.png from assets folder after 5 seconds of inactivity
+  - Windows close automatically when you return to keyboard
 """
 
 import argparse
+import os
 import platform
 import subprocess
 import sys
@@ -31,6 +29,17 @@ try:
 except Exception as e:
     print("Missing dependency: pynput is required. Install with: pip install pynput")
     raise
+
+# Import the image spawning functionality
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    from image_spawner import open_images, close_images
+    print("Successfully loaded image_spawner module")
+except Exception as e:
+    print(f"Warning: Could not import image_spawner: {e}")
+    print("Image spawning will be disabled.")
+    open_images = None
+    close_images = None
 
 
 def now_ts():
@@ -113,14 +122,22 @@ def get_active_window():
 
 
 class AFKTimer:
-    def __init__(self, poll_interval=0.5):
+    def __init__(self, afk_threshold=5.0, poll_interval=0.5, image_count=5):
+        self.afk_threshold = float(afk_threshold)
         self.poll_interval = float(poll_interval)
+        self.image_count = int(image_count)
         self.last_activity = now_ts()
         self.was_afk = False
+        self.images_spawned = False
         self.afk_start_time = None
         self.afk_window = None
+        self.last_spawn_time = None  # Track when we last spawned images
         self.lock = threading.Lock()
         self._stop = threading.Event()
+        
+        # Path to the judging image
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        self.image_path = os.path.join(script_dir, "assets", "judging.jpeg")
 
     def on_key(self, key):
         with self.lock:
@@ -144,9 +161,19 @@ class AFKTimer:
                     duration_str = f"{seconds}s"
                 
                 window_str = self.afk_window if self.afk_window else "(unknown)"
-                print(f"[{resumed_at}] AFK Duration: {duration_str} | Last active window: {window_str}")
+                print(f"[{resumed_at}] Welcome back! AFK Duration: {duration_str} | Last active window: {window_str}")
+                
+                # Close all the judging images when user returns
+                if self.images_spawned and close_images:
+                    try:
+                        close_images()
+                        print("Closing all judging images...")
+                    except Exception as e:
+                        print(f"Error closing images: {e}")
                 
                 self.was_afk = False
+                self.images_spawned = False
+                self.last_spawn_time = None
                 self.afk_start_time = None
                 self.afk_window = None
             
@@ -166,37 +193,95 @@ class AFKTimer:
 
     def run(self):
         self.start_listener()
-        print("AFK timer started. Monitoring keyboard activity... Press Ctrl+C to stop.")
+        print(f"AFK timer started (threshold: {self.afk_threshold}s). Monitoring keyboard activity... Press Ctrl+C to stop.")
+        
+        if not os.path.exists(self.image_path):
+            print(f"Warning: Image not found at {self.image_path}")
+            print("Image spawning will be disabled.")
 
         try:
             while not self._stop.is_set():
                 with self.lock:
                     idle = now_ts() - self.last_activity
+                
+                # Check if user has been AFK for more than the threshold
+                if idle > self.afk_threshold:
+                    if not self.was_afk:
+                        # Just became AFK
+                        self.was_afk = True
+                        self.afk_start_time = self.last_activity
+                        self.afk_window = get_active_window()
                     
-                # Mark as AFK when first keystroke stops (no threshold)
-                if idle > 0.1 and not self.was_afk:
-                    # Just became AFK
-                    self.was_afk = True
-                    self.afk_start_time = self.last_activity
-                    self.afk_window = get_active_window()
+                    # Spawn images initially and then every 5 seconds
+                    current_time = now_ts()
+                    should_spawn = False
+                    
+                    if not self.images_spawned:
+                        # First spawn
+                        should_spawn = True
+                        self.last_spawn_time = current_time
+                    elif self.last_spawn_time and (current_time - self.last_spawn_time) >= 5.0:
+                        # Spawn more every 5 seconds
+                        should_spawn = True
+                        self.last_spawn_time = current_time
+                    
+                    if should_spawn and open_images and os.path.exists(self.image_path):
+                        try:
+                            ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                            if not self.images_spawned:
+                                print(f"[{ts}] AFK detected for {int(idle)}s! Spawning {self.image_count} judging images...")
+                            else:
+                                print(f"[{ts}] Still AFK! Spawning {self.image_count} more judging images...")
+                            success = open_images(self.image_path, spawn_count=self.image_count)
+                            if success:
+                                # Process Qt events to ensure windows are displayed
+                                try:
+                                    from image_spawner import _app
+                                    if _app:
+                                        _app.processEvents()
+                                except:
+                                    pass
+                                self.images_spawned = True
+                            else:
+                                print("Failed to spawn images")
+                        except Exception as e:
+                            print(f"Error spawning images: {e}")
+                            import traceback
+                            traceback.print_exc()
+                
+                # Process Qt events to keep windows responsive
+                try:
+                    from image_spawner import _app
+                    if _app:
+                        _app.processEvents()
+                except:
+                    pass
                     
                 time.sleep(self.poll_interval)
         except KeyboardInterrupt:
             pass
         finally:
+            # Clean up images on exit
+            if self.images_spawned and close_images:
+                try:
+                    close_images()
+                except Exception:
+                    pass
             self.stop()
             print("AFK timer stopped.")
 
 
 def parse_args():
-    p = argparse.ArgumentParser(description='AFK timer that tracks idle time and reports duration when you return')
+    p = argparse.ArgumentParser(description='AFK timer that spawns judging images when idle')
+    p.add_argument('--threshold', '-t', type=float, default=5.0, help='Seconds of inactivity before spawning images (default: 5)')
+    p.add_argument('--count', '-c', type=int, default=5, help='Number of image windows to spawn (default: 5)')
     p.add_argument('--poll', type=float, default=0.5, help='Polling interval in seconds (default: 0.5)')
     return p.parse_args()
 
 
 def main():
     args = parse_args()
-    timer = AFKTimer(poll_interval=args.poll)
+    timer = AFKTimer(afk_threshold=args.threshold, poll_interval=args.poll, image_count=args.count)
     timer.run()
 
 

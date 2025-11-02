@@ -107,14 +107,14 @@ class WindowMonitor:
         Returns:
             WindowState enum value
         """
-        log(f"current_window: {window_info}")
+        # log(f"current_window: {window_info}")
         if window_info is None:
             return WindowState.UNCLASSIFIED
         # Ignore Python windows (to avoid self-detection)
         if window_info.get('process_name').lower() in ['python.exe', 'pythonw.exe']:
             return WindowState.WHITELISTED
 
-        log(f"current_window_2: {window_info}")
+        # log(f"current_window_2: {window_info}")
         # Try tab-based classification first (platform-specific inside tabs package)
         try:
             tab_title, tab_url = get_active_tab()
@@ -236,6 +236,7 @@ class WindowMonitor:
                     current_tab = get_active_tab()
                 except Exception:
                     current_tab = (None, None)
+            
                 
                 tab_changed = (current_tab != self._previous_tab)
 

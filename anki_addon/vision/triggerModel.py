@@ -105,7 +105,7 @@ if __name__ == "__main__":
     landmark_detection_path = "Weights/68_face_landmarks_predictor.dat"
     triggerModel = EyeTrigger(torch_blueprint, torch_weights_path, landmark_detection_path)
 
-    cam = cv.VideoCapture(1)
+    cam = cv.VideoCapture(0)
 
     if not cam.isOpened():
         raise EnvironmentError("Camera was not able to be opened.")
@@ -118,6 +118,8 @@ if __name__ == "__main__":
 
             if cv.waitKey(1) & 0xFF == ord('q'):
                 break
+    except cv.error:
+        pass
     finally:
         cam.release()
         cv.destroyAllWindows()

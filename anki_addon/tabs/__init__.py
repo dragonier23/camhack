@@ -22,6 +22,7 @@ def _get_tab_windows() -> Tuple[Optional[str], Optional[str]]:
 	try:
 		from .get_chrome_tab_windows import get_chrome_url_pywinauto  # type: ignore
 	except Exception as e:
+		log(e)
 		return None, None
 	try:
 		title, url = get_chrome_url_pywinauto()

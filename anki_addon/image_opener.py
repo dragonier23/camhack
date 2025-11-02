@@ -1,6 +1,6 @@
 """ImageOpener - Manages spawning and closing image windows in Anki."""
 
-from aqt.qt import QLabel, QPixmap, QWidget, QVBoxLayout, Qt, QApplication, QPushButton
+from aqt.qt import QLabel, QPixmap, QWidget, QVBoxLayout, Qt, QApplication, QPushButton, QTimer
 from aqt.utils import showInfo
 from aqt import mw
 import os
@@ -8,6 +8,8 @@ import random
 
 
 from typing import List, Any, Tuple
+
+from .window_monitor import WindowState
 
 class ImageOpener:
     """Handles opening and closing image windows at random screen positions."""
@@ -20,8 +22,10 @@ class ImageOpener:
         """
         self.addon_dir: str = addon_dir
         self._image_windows: List[Any] = []
+        self._open_timer: Any = None
+        self._randomise_timer: Any = None
 
-    def open_images(self, input_file: str = "a.png", spawn_count: int = 5) -> None:
+    def open_images(self, *args, input_file: str = "a.png", spawn_count: int = 5) -> None:
         """Open a small, safe number of windows showing an image.
         Each window is placed at a random location on the user's screen.
         Args:
@@ -49,7 +53,7 @@ class ImageOpener:
             w = QWidget()
             # Make window stay on top of other windows
             w.setWindowFlags(w.windowFlags() | Qt.WindowType.WindowStaysOnTopHint)
-            w.setWindowTitle(f"Anki {i+1}")
+            w.setWindowTitle("COME BACK TO ANKI!!")
             layout = QVBoxLayout(w)
             label = QLabel()
             pix = QPixmap(image_path)
@@ -59,7 +63,7 @@ class ImageOpener:
 
             # Limit the displayed image to max width=200 and max height=300 while keeping aspect ratio
             max_w, max_h = 200, 300
-            scaled_pix = pix.scaled(max_w, max_h)
+            scaled_pix = pix.scaled(max_w, max_h, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
             label.setPixmap(scaled_pix)
             layout.addWidget(label)
 
@@ -77,7 +81,11 @@ class ImageOpener:
             w.move(x, y)
             w.show()
             self._image_windows.append(w)
-    
+
+        while len(self._image_windows) > self.MAX_WINDOWS:
+            w = self._image_windows.pop(0)
+            w.close()
+
     def _get_random_position(self, widget):
         """Calculate a random position for a widget on the screen.
         
@@ -132,3 +140,46 @@ class ImageOpener:
             except Exception:
                 # best-effort close; ignore errors
                 pass
+    
+    def _randomise_positions(self) -> None:
+        """Randomize the positions of all open windows."""
+        for w in self._image_windows:
+            try:
+                x, y = self._get_random_position(w)
+                w.move(x, y)
+            except Exception:
+                # best-effort; ignore errors
+                pass
+    
+    def start_spam(self, interval_ms: int = 500) -> None:
+        """Start continuously spawning images every interval_ms milliseconds.
+        
+        Args:
+            interval_ms: How often to spawn images (default 500ms)
+        """
+        if self._open_timer is None:
+            self._open_timer = QTimer()
+            self._open_timer.timeout.connect(self.open_images)
+            self._open_timer.start(interval_ms)
+        
+        # Start randomizing positions every 250ms
+        if self._randomise_timer is None:
+            self._randomise_timer = QTimer()
+            self._randomise_timer.timeout.connect(self._randomise_positions)
+            self._randomise_timer.start(250)
+    
+    def stop_spam(self) -> None:
+        """Stop continuously spawning images."""
+        if self._open_timer is not None:
+            self._open_timer.stop()
+            self._open_timer = None
+        if self._randomise_timer is not None:
+            self._randomise_timer.stop()
+            self._randomise_timer = None
+    
+    def on_window_state_change(self, prev_state: WindowState, curr_state: WindowState, curr_title: str) -> None:
+        """Handle changes in the window state."""
+        if curr_state == WindowState.UNCLASSIFIED:
+            self.start_spam()
+        else:
+            self.stop_spam()

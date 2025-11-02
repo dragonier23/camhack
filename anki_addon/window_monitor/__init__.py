@@ -21,6 +21,8 @@ import datetime
 import os
 from enum import Enum
 
+from ..log_util import log
+
 
 class WindowState(Enum):
     """Enum representing the classification state of a window."""
@@ -43,11 +45,28 @@ class WindowMonitor:
         'visual studio code',
         'google chrome',
         'comet',
+        'add',
     ]
 
     BLACKLIST = [
         'discord',
         'whatsapp',
+        'doom',
+        'signal',
+        'telegram',
+        'steam',
+        'valorant',
+        'twitch',
+        'epic games',
+        'fortnite',
+        'genshin impact',
+        'apex legends',
+        'league of legends',
+        'roblox',
+        'minecraft',
+        'call of duty',
+        'overwatch',
+        'csgo',
     ]
 
     def __init__(self):
@@ -85,6 +104,9 @@ class WindowMonitor:
         """
         if window_info is None:
             return WindowState.UNCLASSIFIED
+        # Ignore Python windows (to avoid self-detection)
+        if window_info.get('process_name').lower() in ['python.exe', 'pythonw.exe']:
+            return WindowState.WHITELISTED
         
         title = window_info.get('title', '').lower()
         
@@ -163,6 +185,7 @@ class WindowMonitor:
             
             # Only notify if state changed
             if current_state != self._previous_state:
+                log(f"Window state changed: {self._previous_state} -> {current_state} (Title: {current_window.get('title', '')})")
                 self._notify_subscribers(self._previous_state, current_state, current_window.get('title', ''))
                 self._previous_state = current_state
                 

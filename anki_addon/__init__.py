@@ -18,10 +18,7 @@ window_monitor = WindowMonitor()
 log('addon initialized')
 persistent_review_window = PersistentReviewWindow(mw)
 
-from .window_monitor import WindowState
-on_blacklisted_switch = lambda _, curr, __: image_opener.open_images() if curr == WindowState.BLACKLISTED else None
-
-window_monitor.subscribe(on_blacklisted_switch)
+window_monitor.subscribe(image_opener.on_window_state_change)
 window_monitor.subscribe(persistent_review_window.on_window_state_change)
 
 # Menu actions: open on Alt+C

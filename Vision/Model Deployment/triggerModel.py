@@ -1,14 +1,15 @@
-import onnx
-import torch
-from onnx2pytorch import ConvertModel
 import cv2 as cv
 import dlib
 import face_recognition
 import numpy as np
-from numpy import ndarray, float32
+import onnx
+import torch
 from imutils import face_utils
+from numpy import float32, ndarray
+from onnx2pytorch import ConvertModel
 
 
+from cameraController import CameraController
 
 # A lot of this code is a rehashing of the open-eye-detector repo, repurposed to provide an interace that measures the 
 
@@ -98,3 +99,25 @@ class EyeTrigger:
 
         return bool(left_eye_open or right_eye_open)
 
+if __name__ == "__main__":
+    torch_weights_path = 'Weights/torch_weights.pth'
+    torch_blueprint = "Weights/my_model.onnx"
+    landmark_detection_path = "Weights/68_face_landmarks_predictor.dat"
+    triggerModel = EyeTrigger(torch_blueprint, torch_weights_path, landmark_detection_path)
+
+    cam = cv.VideoCapture(1)
+
+    if not cam.isOpened():
+        raise EnvironmentError("Camera was not able to be opened.")
+
+    controller = CameraController(cam)
+    try:
+        while True:
+            frameData = controller.getFrame()
+            print(triggerModel.eyesOpen(*frameData))
+
+            if cv.waitKey(1) & 0xFF == ord('q'):
+                break
+    finally:
+        cam.release()
+        cv.destroyAllWindows()

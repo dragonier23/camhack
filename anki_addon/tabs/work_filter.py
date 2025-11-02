@@ -1,6 +1,7 @@
 # focus_filter.py
 # Returns one of: "whitelist", "blacklist", "unclassified"
 
+from typing import Optional, Set
 from urllib.parse import urlparse
 
 WHITELIST_DOMAINS = {
@@ -45,7 +46,7 @@ NONWORK_TITLE_KEYWORDS = {
 }
 
 # --------- Helpers ---------
-def _host(url: str | None) -> str:
+def _host(url: Optional[str]) -> str:
     if not url:
         return ""
     try:
@@ -56,14 +57,14 @@ def _host(url: str | None) -> str:
     except Exception:
         return ""
 
-def _host_in(host: str, domset: set[str]) -> bool:
+def _host_in(host: str, domset: Set[str]) -> bool:
     return any(host == d or host.endswith("." + d) for d in domset)
 
-def _any_kw(s: str, kws: set[str]) -> bool:
+def _any_kw(s: str, kws: Set[str]) -> bool:
     s = (s or "").lower()
     return any(k in s for k in kws)
 
-def classify(url: str | None = None, title: str | None = None) -> str:
+def classify(url: Optional[str] = None, title: Optional[str] = None) -> str:
     """
     Returns:
       label:  "whitelist" | "blacklist" | "unclassified"

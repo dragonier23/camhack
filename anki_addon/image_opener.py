@@ -5,7 +5,7 @@ import random
 from typing import Any, List, Tuple
 
 from aqt import mw
-from aqt.qt import (QApplication, QEvent, QLabel, QObject, QPixmap,
+from aqt.qt import (QApplication, QCloseEvent, QEvent, QLabel, QObject, QPixmap,
                     QPushButton, Qt, QTimer, QVBoxLayout, QWidget)
 from aqt.utils import showInfo
 
@@ -15,7 +15,7 @@ from .window_monitor import WindowState
 
 class ImageOpener:
     """Handles opening and closing image windows at random screen positions."""
-    MAX_WINDOWS: int = 25  # Hard limit on number of windows
+    MAX_WINDOWS: int = 5  # Hard limit on number of windows
 
     def __init__(self, addon_dir: str) -> None:
         """Initialize the ImageOpener.
@@ -27,16 +27,15 @@ class ImageOpener:
         self._open_timer: Any = None
         self._randomise_timer: Any = None
 
-    def open_images(self, input_file: str = "judging.jpeg", spawn_count: int = 5) -> None:
+    def open_images(self, spawn_count: int = 1) -> None:
         """Open a small, safe number of windows showing an image.
         Each window is placed at a random location on the user's screen.
         Args:
             input_file: Name of the image file (relative to addon directory)
             spawn_count: Number of windows to spawn
         """
-        # Coerce QAction.triggered(bool) accidental arg
-        if isinstance(input_file, bool):
-            input_file = "judging.jpeg"
+
+        input_file = random.choice(["a.png", "churchill.jpeg", "concerned.jpeg", "confused.jpeg", "happy.jpeg", "inquisitive.jpeg", "john.jpeg", "judging.jpeg", "looking.jpeg", "smiling.jpeg"])
 
         # Enforce hard limit on total windows
         current_count: int = len(self._image_windows)
@@ -128,10 +127,10 @@ class ImageOpener:
         return x, y
     
     def _create_focus_filter(self, widget):
-        """Create an event filter that detects mouse press events on the widget.
+        """Create an event filter that detects mouse press and close events on the widget.
         
         Args:
-            widget: The widget to monitor for mouse presses
+            widget: The widget to monitor for mouse presses and close events
             
         Returns:
             Event filter object
@@ -161,7 +160,7 @@ class ImageOpener:
         except Exception:
             # best-effort; ignore errors
             pass
-    
+
     def close_images(self):
         """Close all image windows opened by this instance."""
         while self._image_windows:
@@ -173,31 +172,34 @@ class ImageOpener:
                 pass
     
     def _randomise_positions(self) -> None:
-        """Randomize the positions of all open windows."""
+        """Randomize the positions of all open windows and clean up closed ones."""
+        # First, clean up any windows that are no longer valid
+        
         for w in self._image_windows:
-            try:
-                x, y = self._get_random_position(w)
-                w.move(x, y)
-            except Exception:
-                # best-effort; ignore errors
-                pass
+            if random.random() > 0.5: continue
+            self.open_images()
+            try: 
+                w.close()
+            except: pass
     
-    def start_spam(self, interval_ms: int = 500) -> None:
+    def start_spam(self, interval_ms: int = 1000 * 3) -> None:
         """Start continuously spawning images every interval_ms milliseconds.
         
         Args:
             interval_ms: How often to spawn images (default 500ms)
         """
+        self._image_windows = []
         if self._open_timer is None:
+            log('starting spam')
             self._open_timer = QTimer()
             self._open_timer.timeout.connect(self.open_images)
             self._open_timer.start(interval_ms)
         
-        # Start randomizing positions every 250ms
+        # Start randomizing positions every 2 seconds
         if self._randomise_timer is None:
             self._randomise_timer = QTimer()
             self._randomise_timer.timeout.connect(self._randomise_positions)
-            self._randomise_timer.start(250)
+            self._randomise_timer.start(1000)
     
     def stop_spam(self) -> None:
         """Stop continuously spawning images."""

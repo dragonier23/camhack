@@ -136,9 +136,10 @@ class ImageOpener:
             Event filter object
         """
         class FocusEventFilter(QObject):
-            def __init__(self, parent_opener):
+            def __init__(self, parent_opener, window):
                 super().__init__(mw)
                 self.parent_opener = parent_opener
+                self.window = window
             
             def eventFilter(self, obj, event):
                 if event.type() == QEvent.Type.MouseButtonPress:
@@ -147,9 +148,14 @@ class ImageOpener:
                     self.parent_opener.close_images()
                     self.parent_opener.stop_spam()
                     return True
+                elif event.type() == QEvent.Type.Close:
+                    # Remove the window from tracking when it's closed
+                    if self.window in self.parent_opener._image_windows:
+                        self.parent_opener._image_windows.remove(self.window)
+                    return False
                 return False
         
-        return FocusEventFilter(self)
+        return FocusEventFilter(self, widget)
     
     def _switch_to_anki(self):
         """Activate and bring Anki main window to the front."""
@@ -172,15 +178,19 @@ class ImageOpener:
                 pass
     
     def _randomise_positions(self) -> None:
-        """Randomize the positions of all open windows and clean up closed ones."""
-        # First, clean up any windows that are no longer valid
+        """Randomize the positions of all open windows by closing and respawning them."""
+        # Clean up any windows that have been closed
+        self._image_windows = [w for w in self._image_windows if w.isVisible()]
         
-        for w in self._image_windows:
-            if random.random() > 0.5: continue
-            self.open_images()
-            try: 
-                w.close()
-            except: pass
+        # Get the current count of visible windows
+        current_count = len(self._image_windows)
+        
+        # Close all current windows
+        self.close_images()
+        
+        # Spawn them again at new random positions
+        if current_count > 0:
+            self.open_images(spawn_count=current_count)
     
     def start_spam(self, interval_ms: int = 1000 * 3) -> None:
         """Start continuously spawning images every interval_ms milliseconds.

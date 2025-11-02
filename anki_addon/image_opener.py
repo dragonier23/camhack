@@ -39,6 +39,7 @@ class ImageOpener:
 
         # Enforce hard limit on total windows
         current_count: int = len(self._image_windows)
+        log(f'{current_count}/{self.MAX_WINDOWS} windows open!')
         if current_count >= self.MAX_WINDOWS:
             return
 
@@ -148,11 +149,6 @@ class ImageOpener:
                     self.parent_opener.close_images()
                     self.parent_opener.stop_spam()
                     return True
-                elif event.type() == QEvent.Type.Close:
-                    # Remove the window from tracking when it's closed
-                    if self.window in self.parent_opener._image_windows:
-                        self.parent_opener._image_windows.remove(self.window)
-                    return False
                 return False
         
         return FocusEventFilter(self, widget)
@@ -209,7 +205,7 @@ class ImageOpener:
         if self._randomise_timer is None:
             self._randomise_timer = QTimer()
             self._randomise_timer.timeout.connect(self._randomise_positions)
-            self._randomise_timer.start(1000)
+            self._randomise_timer.start(4000)
     
     def stop_spam(self) -> None:
         """Stop continuously spawning images."""

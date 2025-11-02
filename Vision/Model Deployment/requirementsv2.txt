@@ -1,1 +1,8 @@
-keras
+torch
+onnx
+onnx2pytorch
+opencv-python
+dlib
+face_recognition
+imutils
+numpy

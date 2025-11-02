@@ -1,4 +1,3 @@
-from keras.applications import mobilenet
 import onnx
 import torch
 from onnx2pytorch import ConvertModel

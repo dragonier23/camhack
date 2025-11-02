@@ -25,13 +25,17 @@ class ImageOpener:
         self._open_timer: Any = None
         self._randomise_timer: Any = None
 
-    def open_images(self, *args, input_file: str = "a.png", spawn_count: int = 5) -> None:
+    def open_images(self, input_file: str = "judging.jpeg", spawn_count: int = 5) -> None:
         """Open a small, safe number of windows showing an image.
         Each window is placed at a random location on the user's screen.
         Args:
             input_file: Name of the image file (relative to addon directory)
             spawn_count: Number of windows to spawn
         """
+        # Coerce QAction.triggered(bool) accidental arg
+        if isinstance(input_file, bool):
+            input_file = "judging.jpeg"
+
         # Enforce hard limit on total windows
         current_count: int = len(self._image_windows)
         if current_count >= self.MAX_WINDOWS:

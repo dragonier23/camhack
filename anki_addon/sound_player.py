@@ -21,6 +21,10 @@ class SoundPlayer:
         Args:
             audio_file: Name of the audio file (relative to addon directory)
         """
+        # Coerce QAction.triggered(bool) accidental arg
+        if isinstance(audio_file, bool):
+            audio_file = "a.mp3"
+
         audio_path: str = os.path.join(self.addon_dir, audio_file)
         if not os.path.exists(audio_path):
             showInfo(f"Sound not found: {audio_path}")

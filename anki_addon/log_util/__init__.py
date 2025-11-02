@@ -4,7 +4,6 @@ import os
 _DIR = os.path.dirname(__file__)
 _LOG_FILE = os.path.join(_DIR, "..", "logs.txt")
 
-
 def log(message: str) -> None:
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = f"[{timestamp}] {message}\n"

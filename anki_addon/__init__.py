@@ -12,8 +12,8 @@ from .unclosable_window import PersistentReviewWindow
 
 # Initialize helper classes
 _addon_dir = os.path.dirname(__file__)
-image_opener = ImageOpener(_addon_dir)
-sound_player = SoundPlayer(_addon_dir)
+image_opener = ImageOpener(os.path.join(_addon_dir, "assets", "images"))
+sound_player = SoundPlayer(os.path.join(_addon_dir, "assets", "audio"))
 window_monitor = WindowMonitor()
 log('addon initialized')
 persistent_review_window = PersistentReviewWindow(mw)
@@ -24,13 +24,13 @@ window_monitor.subscribe(persistent_review_window.on_window_state_change)
 # Menu actions: open on Alt+C
 open_action = QAction("Open Images", mw)
 open_action.setShortcut(QKeySequence("Alt+C"))
-open_action.triggered.connect(image_opener.open_images)
+open_action.triggered.connect(lambda checked=False: image_opener.open_images())
 mw.form.menuTools.addAction(open_action)
 
 # Play sound action (Alt+B) — use only aqt.sound as requested
 play_action = QAction("Play Sound", mw)
 play_action.setShortcut(QKeySequence("Alt+B"))
-play_action.triggered.connect(sound_player.play_sound)
+play_action.triggered.connect(lambda checked=False: sound_player.play_sound())
 mw.form.menuTools.addAction(play_action)
 
 # Instead of a keyboard shortcut to close images, close them when the main Anki
@@ -94,13 +94,13 @@ window_monitor.start()
 # Additional shortcut: Alt+P to open the persistent review window
 altp_action = QAction("Open Persistent Review Window (Alt+P)", mw)
 altp_action.setShortcut(QKeySequence("Alt+P"))
-altp_action.triggered.connect(persistent_review_window.start)
+altp_action.triggered.connect(lambda checked=False: persistent_review_window.start())
 mw.form.menuTools.addAction(altp_action)
 
 # Menu action to close persistent window (Alt+Shift+U)
 close_unclosable_action = QAction("Close Persistent Review Window", mw)
 close_unclosable_action.setShortcut(QKeySequence("Alt+O"))
-close_unclosable_action.triggered.connect(persistent_review_window.stop)
+close_unclosable_action.triggered.connect(lambda checked=False: persistent_review_window.stop())
 mw.form.menuTools.addAction(close_unclosable_action)
 
 

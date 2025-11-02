@@ -405,6 +405,7 @@ class PersistentReviewWindow(QWidget):
         has_completed_reviews: bool = curr_reviews >= self.REQUIRED_REVIEWS
         
         log(f'Window state change: {prev_state.value} -> {curr_state.value} (title: {curr_title})')
+        log(f'Current reviews done: {curr_reviews}/{self.REQUIRED_REVIEWS}')
         
         # If user has completed required reviews, stop everything
         if has_completed_reviews:

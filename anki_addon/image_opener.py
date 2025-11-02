@@ -1,19 +1,21 @@
 """ImageOpener - Manages spawning and closing image windows in Anki."""
 
-from aqt.qt import QLabel, QPixmap, QWidget, QVBoxLayout, Qt, QApplication, QPushButton, QTimer
-from aqt.utils import showInfo
-from aqt import mw
 import os
 import random
+from typing import Any, List, Tuple
 
+from aqt import mw
+from aqt.qt import (QApplication, QEvent, QLabel, QObject, QPixmap,
+                    QPushButton, Qt, QTimer, QVBoxLayout, QWidget)
+from aqt.utils import showInfo
 
-from typing import List, Any, Tuple
-
+from .log_util import log
 from .window_monitor import WindowState
+
 
 class ImageOpener:
     """Handles opening and closing image windows at random screen positions."""
-    MAX_WINDOWS: int = 100  # Hard limit on number of windows
+    MAX_WINDOWS: int = 25  # Hard limit on number of windows
 
     def __init__(self, addon_dir: str) -> None:
         """Initialize the ImageOpener.
@@ -58,6 +60,10 @@ class ImageOpener:
             # Make window stay on top of other windows
             w.setWindowFlags(w.windowFlags() | Qt.WindowType.WindowStaysOnTopHint)
             w.setWindowTitle("COME BACK TO ANKI!!")
+            
+            # Install event filter to detect focus events
+            w.installEventFilter(self._create_focus_filter(w))
+            
             layout = QVBoxLayout(w)
             label = QLabel()
             pix = QPixmap(image_path)
@@ -71,10 +77,10 @@ class ImageOpener:
             label.setPixmap(scaled_pix)
             layout.addWidget(label)
 
-            # Add button to switch back to Anki
-            back_button = QPushButton("Back to Anki")
-            back_button.clicked.connect(self._switch_to_anki)
-            layout.addWidget(back_button)
+            # Add text label
+            text_label = QLabel("COME BACK TO ANKI!!")
+            text_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            layout.addWidget(text_label)
 
             w.setLayout(layout)
             # Size the window to the scaled image
@@ -85,10 +91,6 @@ class ImageOpener:
             w.move(x, y)
             w.show()
             self._image_windows.append(w)
-
-        while len(self._image_windows) > self.MAX_WINDOWS:
-            w = self._image_windows.pop(0)
-            w.close()
 
     def _get_random_position(self, widget):
         """Calculate a random position for a widget on the screen.
@@ -124,6 +126,31 @@ class ImageOpener:
             y = 100 + random.randint(0, 300)
         
         return x, y
+    
+    def _create_focus_filter(self, widget):
+        """Create an event filter that detects mouse press events on the widget.
+        
+        Args:
+            widget: The widget to monitor for mouse presses
+            
+        Returns:
+            Event filter object
+        """
+        class FocusEventFilter(QObject):
+            def __init__(self, parent_opener):
+                super().__init__(mw)
+                self.parent_opener = parent_opener
+            
+            def eventFilter(self, obj, event):
+                if event.type() == QEvent.Type.MouseButtonPress:
+                    # Window was clicked - switch to Anki and close all windows
+                    self.parent_opener._switch_to_anki()
+                    self.parent_opener.close_images()
+                    self.parent_opener.stop_spam()
+                    return True
+                return False
+        
+        return FocusEventFilter(self)
     
     def _switch_to_anki(self):
         """Activate and bring Anki main window to the front."""

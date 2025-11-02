@@ -33,29 +33,6 @@ play_action.setShortcut(QKeySequence("Alt+B"))
 play_action.triggered.connect(lambda checked=False: sound_player.play_sound())
 mw.form.menuTools.addAction(play_action)
 
-# Instead of a keyboard shortcut to close images, close them when the main Anki
-# window receives focus again. Use QApplication.focusChanged to detect focus shifts.
-def _on_focus_changed(old: Any, new: Any) -> None:
-    try:
-        if new is None:
-            return
-        # new.window() is the top-level window the newly focused widget belongs to
-        top = new.window()
-        if top is mw:
-            image_opener.close_images()
-    except Exception:
-        # best-effort; ignore errors
-        pass
-from typing import Any
-
-app = QApplication.instance()
-if app is not None:
-    try:
-        app.focusChanged.connect(_on_focus_changed)
-    except Exception:
-        # some bindings or environments may not expose the signal; ignore in that case
-        pass
-
 # Intercept Cmd+Q to prevent quitting when persistent window is active or during review
 original_quit = mw.closeEvent
 

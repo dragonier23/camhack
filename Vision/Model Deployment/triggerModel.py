@@ -1,11 +1,12 @@
-from keras.models import load_model
 from keras.applications import mobilenet
+import onnx
+import torch
+from onnx2pytorch import ConvertModel
 import cv2 as cv
 import dlib
 import face_recognition
 import numpy as np
 from numpy import ndarray, float32
-import tensorflow as tf
 from imutils import face_utils
 
 
@@ -13,13 +14,25 @@ from imutils import face_utils
 # A lot of this code is a rehashing of the open-eye-detector repo, repurposed to provide an interace that measures the 
 
 class EyeTrigger:
-    def __init__(self, weights_path, shape_pred_path):
-        self.model = load_model(weights_path, compile = False)
+    def __init__(self, blueprint_path, weights_path, shape_pred_path):
+        if torch.cuda.is_available():
+            self.device = torch.device('cuda')
+        elif torch.backends.mps.is_available():
+            self.device = torch.device('mps')
+        else:
+            self.device = torch.device('cpu')
+
+        onnx_model = onnx.load(blueprint_path)
+        self.model = ConvertModel(onnx_model)
+        self.model.load_state_dict(torch.load(weights_path))
+        self.model.eval()
+        self.model.to(self.device)
+
         self.predictor = dlib.shape_predictor(shape_pred_path)
         self.left_eye_start_index, self.left_eye_end_index = face_utils.FACIAL_LANDMARKS_IDXS["left_eye"]
         self.right_eye_start_index, self.right_eye_end_index = face_utils.FACIAL_LANDMARKS_IDXS["right_eye"]
    
-
+    '''
     # Directly copied from other repo
     def predict_eye_state(self, image):
         image = cv.resize(image, (20, 10))
@@ -29,6 +42,24 @@ class EyeTrigger:
         image_batch = mobilenet.preprocess_input(image_batch)
 
         return np.argmax(self.model.predict(image_batch)[0] )
+    '''
+
+    def predict_eye_state(self, image):
+        # TOOD: !ssize.empty() in cv.resize; image is empty/no face is detected... so need to consider that.
+        image = cv.resize(image, (20, 10))
+        image = image.astype(dtype=np.float32)
+        image_tensor = torch.from_numpy(image)
+
+        image_batch = image_tensor.unsqueeze(0).unsqueeze(0)
+        image_batch = (image_batch / 127.5) - 1.0
+        image_batch = image_batch.to(self.device)
+
+        with torch.no_grad():
+            output = self.model(image_batch)
+
+        prediction_index = torch.argmax(output, dim=1).item()
+
+        return prediction_index
 
     # Mostly copied from other repo
     def eyesOpen(self, frame: ndarray, rgb_img: ndarray, hratio, wratio) -> bool:

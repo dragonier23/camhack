@@ -275,9 +275,9 @@ class WindowMonitor:
                 if curr_handle != self._previous_window_handle:
                     current_state = self._classify_window(current_window)
                     
+                    log(f"Transition: {self._previous_state} -> {current_state} (Title: {current_window.get('title', '')})")
                     # Only notify if state changed
                     if current_state != self._previous_state:
-                        log(f"Window state changed: {self._previous_state} -> {current_state} (Title: {current_window.get('title', '')})")
                         self._notify_subscribers(self._previous_state, current_state, current_window.get('title', ''))
                         self._previous_state = current_state
                     

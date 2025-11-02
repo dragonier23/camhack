@@ -401,30 +401,34 @@ class PersistentReviewWindow(QWidget):
         has_completed_reviews: bool = curr_reviews >= self.REQUIRED_REVIEWS
         
         log(f'Window state change: {prev_state.value} -> {curr_state.value} (title: {curr_title})')
-        log(f'Reviews completed: {curr_reviews}/{self.REQUIRED_REVIEWS}')
-        log(f'DEBUG - is_active: {self.is_active}, _triggered_by_blacklist: {self._triggered_by_blacklist}')
         
         # If user has completed required reviews, stop everything
         if has_completed_reviews:
             log('Reviews completed! Stopping popup.')
             if self.is_active:
                 self.stop()
+                self._triggered_by_blacklist = False
             return
+        
+        if curr_state == WindowState.BLACKLISTED:
+            if not self.is_active:
+                log('Switched to blacklisted app - triggering popup')
+                self.start()
+                self._triggered_by_blacklist = True
         
         # Check if currently in Anki
         is_anki: bool = curr_state == WindowState.WHITELISTED and 'anki' in curr_title.lower()
-        log(f'DEBUG - is_anki: {is_anki}, curr_state: {curr_state}, WindowState.WHITELISTED: {WindowState.WHITELISTED}, curr_title lower: {curr_title.lower()}')
         
-        if not is_anki:
+        if not is_anki and self._triggered_by_blacklist:
             # User switched to a non-Anki app
             log('Switched away from Anki - triggering popup')
             if not self.is_active:
                 self.start()
             self._bring_to_front()
+            self.is_active = True
             
             # Show aggressive message in title for distraction
             aggressive_msg = self._get_distraction_message()
-            log(f'Setting title to: {aggressive_msg}')
             self.title_label.setText(aggressive_msg)
             # Refresh stylesheet to update dynamic font size
             title_style, _, _, _ = self._get_stylesheet()

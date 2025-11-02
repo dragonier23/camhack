@@ -49,6 +49,9 @@ class WindowMonitor:
         'add',
         "firefox", 
         "file explorer",
+        'task view',
+        'task switching',
+        'search'
     ]
 
     BLACKLIST = [

@@ -377,6 +377,10 @@ class PersistentReviewWindow(QWidget):
             if mw and mw.col:
                 # Switch to review mode
                 mw.moveToState("review")
+                
+                mw.show()
+                mw.raise_()
+                mw.activateWindow()
                 # Temporarily deactivate monitoring while reviewing
                 self.is_active = False
                 self.hide()

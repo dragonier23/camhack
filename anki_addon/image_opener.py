@@ -7,42 +7,40 @@ import os
 import random
 
 
+from typing import List, Any, Tuple
+
 class ImageOpener:
     """Handles opening and closing image windows at random screen positions."""
-    
-    MAX_WINDOWS = 100  # Hard limit on number of windows
-    
-    def __init__(self, addon_dir):
+    MAX_WINDOWS: int = 100  # Hard limit on number of windows
+
+    def __init__(self, addon_dir: str) -> None:
         """Initialize the ImageOpener.
-        
         Args:
             addon_dir: Directory path where the addon files are located
         """
-        self.addon_dir = addon_dir
-        self._image_windows = []
-    
-    def open_images(self, input_file="a.png", spawn_count=5):
+        self.addon_dir: str = addon_dir
+        self._image_windows: List[Any] = []
+
+    def open_images(self, input_file: str = "a.png", spawn_count: int = 5) -> None:
         """Open a small, safe number of windows showing an image.
-        
         Each window is placed at a random location on the user's screen.
-        
         Args:
             input_file: Name of the image file (relative to addon directory)
             spawn_count: Number of windows to spawn
         """
         # Enforce hard limit on total windows
-        current_count = len(self._image_windows)
+        current_count: int = len(self._image_windows)
         if current_count >= self.MAX_WINDOWS:
             return
-        
+
         # Adjust spawn_count if it would exceed the limit
-        available_slots = self.MAX_WINDOWS - current_count
+        available_slots: int = self.MAX_WINDOWS - current_count
         spawn_count = min(spawn_count, available_slots)
-        
+
         if spawn_count <= 0:
             return
-        
-        image_path = os.path.join(self.addon_dir, input_file)
+
+        image_path: str = os.path.join(self.addon_dir, input_file)
         if not os.path.exists(image_path):
             showInfo(f"Image not found: {image_path}")
             return
@@ -64,12 +62,12 @@ class ImageOpener:
             scaled_pix = pix.scaled(max_w, max_h)
             label.setPixmap(scaled_pix)
             layout.addWidget(label)
-            
+
             # Add button to switch back to Anki
             back_button = QPushButton("Back to Anki")
             back_button.clicked.connect(self._switch_to_anki)
             layout.addWidget(back_button)
-            
+
             w.setLayout(layout)
             # Size the window to the scaled image
             w.resize(scaled_pix.width(), scaled_pix.height())

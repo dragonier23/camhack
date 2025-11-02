@@ -37,7 +37,11 @@ def get_active_window_info_mac() -> Optional[Dict[str, Any]]:
             
             if app_name:
                 return {
-                    "title": app_name
+                    "title": app_name,
+                    "handle": None,
+                    "class_name": None,
+                    "process_id": None,
+                    "process_name": None,
                 }
                 
     except subprocess.TimeoutExpired:

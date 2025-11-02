@@ -22,6 +22,7 @@ import os
 from enum import Enum
 
 from ..log_util import log
+from ..tabs import get_active_tab, classify as classify_tab
 
 
 class WindowState(Enum):
@@ -46,6 +47,8 @@ class WindowMonitor:
         'google chrome',
         'comet',
         'add',
+        "firefox", 
+        "file explorer",
     ]
 
     BLACKLIST = [
@@ -74,6 +77,8 @@ class WindowMonitor:
         self._subscribers: list[Callable[[WindowState, WindowState, str], None]] = []
         self._timer = None
         self._previous_state = None
+        self._previous_window_handle = None
+        self._previous_tab = (None, None)  # (title, url)
 
     def subscribe(self, callback: Callable[[WindowState, WindowState, str], None]):
         """Subscribe to window state change notifications.
@@ -102,11 +107,28 @@ class WindowMonitor:
         Returns:
             WindowState enum value
         """
+        log(f"current_window: {window_info}")
         if window_info is None:
             return WindowState.UNCLASSIFIED
         # Ignore Python windows (to avoid self-detection)
         if window_info.get('process_name').lower() in ['python.exe', 'pythonw.exe']:
             return WindowState.WHITELISTED
+
+        log(f"current_window_2: {window_info}")
+        # Try tab-based classification first (platform-specific inside tabs package)
+        try:
+            tab_title, tab_url = get_active_tab()
+            log("detected tab:", tab_title, tab_url)
+            if tab_title or tab_url:
+                label = classify_tab(url=tab_url, title=tab_title)
+                if label == 'whitelist':
+                    return WindowState.WHITELISTED
+                if label == 'blacklist':
+                    return WindowState.BLACKLISTED
+                # unclassified -> fall through to legacy heuristics
+        except Exception:
+            # If tab detection fails, continue to legacy heuristics
+            pass
         
         title = window_info.get('title', '').lower()
         
@@ -162,6 +184,12 @@ class WindowMonitor:
             # Get initial window state
             initial_window = get_active_window_info()
             self._previous_state = self._classify_window(initial_window)
+            self._previous_window_handle = initial_window.get('handle') if initial_window else None
+            # Capture initial tab if available
+            try:
+                self._previous_tab = get_active_tab()
+            except Exception:
+                self._previous_tab = (None, None)
             
             # Create timer for periodic checks
             self._timer = QTimer()
@@ -181,13 +209,81 @@ class WindowMonitor:
         """Called periodically to check if the active window state changed."""
         try:
             current_window = get_active_window_info()
-            current_state = self._classify_window(current_window)
+            curr_handle = current_window.get('handle') if current_window else None
             
-            # Only notify if state changed
-            if current_state != self._previous_state:
-                log(f"Window state changed: {self._previous_state} -> {current_state} (Title: {current_window.get('title', '')})")
-                self._notify_subscribers(self._previous_state, current_state, current_window.get('title', ''))
-                self._previous_state = current_state
+            # Check if current window is a browser
+            is_browser = False
+            if current_window:
+                class_name = (current_window.get('class_name') or '').strip()
+                proc_name = (current_window.get('process_name') or '').lower()
+                
+                # Exclude Electron apps (VS Code, Discord, etc.) even if they use Chrome_WidgetWin_1
+                electron_apps = ('code.exe', 'discord.exe', 'slack.exe', 'teams.exe', 'spotify.exe')
+                is_electron_app = proc_name in electron_apps
+                
+                # Only consider it a browser if it has the Chrome UI AND is actually a browser process
+                is_browser = (
+                    (class_name == 'Chrome_WidgetWin_1' and proc_name in ('chrome.exe', 'msedge.exe', 'brave.exe')) or
+                    proc_name == 'firefox.exe'
+                ) and not is_electron_app
+
+            if is_browser:
+                # For browsers: check both window changes AND tab changes
+                window_changed = (curr_handle != self._previous_window_handle)
+                
+                # Get current tab
+                try:
+                    current_tab = get_active_tab()
+                except Exception:
+                    current_tab = (None, None)
+                
+                tab_changed = (current_tab != self._previous_tab)
+
+                # If either window or tab changed, re-classify
+                if window_changed or tab_changed:
+                    # Use tab-based classification directly (we already have the tab info)
+                    tab_title, tab_url = current_tab
+                    current_state = WindowState.UNCLASSIFIED
+                    
+                    if tab_title or tab_url:
+                        try:
+                            label = classify_tab(url=tab_url, title=tab_title)
+                            if label == 'whitelist':
+                                current_state = WindowState.WHITELISTED
+                            elif label == 'blacklist':
+                                current_state = WindowState.BLACKLISTED
+                            # else: stays UNCLASSIFIED
+                        except Exception:
+                            # If classification fails, fall back to title-based
+                            current_state = self._classify_window(current_window)
+                    else:
+                        # No tab info available, use window title classification
+                        current_state = self._classify_window(current_window)
+
+                    # Only notify if state changed
+                    if current_state != self._previous_state:
+                        change_type = "Window" if window_changed else "Tab"
+                        log(f"{change_type} state changed: {self._previous_state} -> {current_state} (Title: {current_window.get('title', '')})")
+                        self._notify_subscribers(self._previous_state, current_state, current_window.get('title', ''))
+                        self._previous_state = current_state
+                    
+                    # Update tracking regardless of state change
+                    self._previous_window_handle = curr_handle
+                    self._previous_tab = current_tab
+            else:
+                # For non-browsers: check only window changes
+                if curr_handle != self._previous_window_handle:
+                    current_state = self._classify_window(current_window)
+                    
+                    log(f"Transition: {self._previous_state} -> {current_state} (Title: {current_window.get('title', '')})")
+                    # Only notify if state changed
+                    if current_state != self._previous_state:
+                        self._notify_subscribers(self._previous_state, current_state, current_window.get('title', ''))
+                        self._previous_state = current_state
+                    
+                    # Update tracking
+                    self._previous_window_handle = curr_handle
+                    self._previous_tab = (None, None)  # Reset tab tracking for non-browsers
                 
         except Exception as e:
             # Silent fail - don't interrupt Anki's operation

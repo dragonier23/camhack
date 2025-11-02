@@ -1,0 +1,271 @@
+[2025-11-02 16:22:37] addon initialized
+[2025-11-02 16:22:37] [WinError -2147417850] Cannot change thread mode after it is set
+[2025-11-02 16:22:38] === Eye Monitor Session Started ===
+[2025-11-02 16:22:42] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: C:\Users\user\Documents\GitHub\camhack\.venv2\Scripts\python.exe)
+[2025-11-02 16:22:42] Window state change: whitelisted -> unclassified (title: C:\Users\user\Documents\GitHub\camhack\.venv2\Scripts\python.exe)
+[2025-11-02 16:22:42] Reviews completed! Stopping popup.
+[2025-11-02 16:22:44] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: COME BACK TO ANKI!!)
+[2025-11-02 16:22:44] Window state change: unclassified -> whitelisted (title: COME BACK TO ANKI!!)
+[2025-11-02 16:22:44] Reviews completed! Stopping popup.
+[2025-11-02 16:22:45] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:22:50] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: logs.txt - camhack - Visual Studio Code)
+[2025-11-02 16:23:31] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: )
+[2025-11-02 16:23:31] Window state change: whitelisted -> unclassified (title: )
+[2025-11-02 16:23:31] Reviews completed! Stopping popup.
+[2025-11-02 16:23:32] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: COME BACK TO ANKI!!)
+[2025-11-02 16:23:32] Window state change: unclassified -> whitelisted (title: COME BACK TO ANKI!!)
+[2025-11-02 16:23:32] Reviews completed! Stopping popup.
+[2025-11-02 16:23:34] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:23:35] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: logs.txt - camhack - Visual Studio Code)
+[2025-11-02 16:23:37] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: Video)
+[2025-11-02 16:23:49] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: logs.txt - camhack - Visual Studio Code)
+[2025-11-02 16:23:53] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: )
+[2025-11-02 16:23:53] Window state change: whitelisted -> unclassified (title: )
+[2025-11-02 16:23:53] Reviews completed! Stopping popup.
+[2025-11-02 16:23:54] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: Video)
+[2025-11-02 16:23:54] Window state change: unclassified -> whitelisted (title: Video)
+[2025-11-02 16:23:54] Reviews completed! Stopping popup.
+[2025-11-02 16:23:55] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: Video)
+[2025-11-02 16:23:58] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:24:00] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: COME BACK TO ANKI!!)
+[2025-11-02 16:25:25] addon initialized
+[2025-11-02 16:25:25] [WinError -2147417850] Cannot change thread mode after it is set
+[2025-11-02 16:25:27] === Eye Monitor Session Started ===
+[2025-11-02 16:25:29] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: Terminal)
+[2025-11-02 16:25:29] starting spam
+[2025-11-02 16:25:29] Window state change: whitelisted -> unclassified (title: Terminal)
+[2025-11-02 16:25:29] Reviews completed! Stopping popup.
+[2025-11-02 16:25:32] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: __init__.py - camhack - Visual Studio Code)
+[2025-11-02 16:25:32] Window state change: unclassified -> whitelisted (title: __init__.py - camhack - Visual Studio Code)
+[2025-11-02 16:25:32] Reviews completed! Stopping popup.
+[2025-11-02 16:25:51] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: )
+[2025-11-02 16:25:51] starting spam
+[2025-11-02 16:25:51] Window state change: whitelisted -> unclassified (title: )
+[2025-11-02 16:25:51] Reviews completed! Stopping popup.
+[2025-11-02 16:25:51] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:25:51] Window state change: unclassified -> whitelisted (title: User 1 - Anki)
+[2025-11-02 16:25:51] Reviews completed! Stopping popup.
+[2025-11-02 16:25:55] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: GitHub Desktop)
+[2025-11-02 16:25:55] starting spam
+[2025-11-02 16:25:55] Window state change: whitelisted -> unclassified (title: GitHub Desktop)
+[2025-11-02 16:25:55] Reviews completed! Stopping popup.
+[2025-11-02 16:25:58] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:25:58] Window state change: unclassified -> whitelisted (title: User 1 - Anki)
+[2025-11-02 16:25:58] Reviews completed! Stopping popup.
+[2025-11-02 16:25:59] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: )
+[2025-11-02 16:25:59] starting spam
+[2025-11-02 16:25:59] Window state change: whitelisted -> unclassified (title: )
+[2025-11-02 16:25:59] Reviews completed! Stopping popup.
+[2025-11-02 16:25:59] Transition: WindowState.UNCLASSIFIED -> WindowState.UNCLASSIFIED (Title: C:\Users\user\Documents\GitHub\camhack\.venv2\Scripts\python.exe)
+[2025-11-02 16:26:05] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:26:05] Window state change: unclassified -> whitelisted (title: User 1 - Anki)
+[2025-11-02 16:26:05] Reviews completed! Stopping popup.
+[2025-11-02 16:26:09] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: Video)
+[2025-11-02 16:26:11] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: C:\Users\user\Documents\GitHub\camhack\.venv2\Scripts\python.exe)
+[2025-11-02 16:26:11] starting spam
+[2025-11-02 16:26:11] Window state change: whitelisted -> unclassified (title: C:\Users\user\Documents\GitHub\camhack\.venv2\Scripts\python.exe)
+[2025-11-02 16:26:11] Reviews completed! Stopping popup.
+[2025-11-02 16:26:12] Transition: WindowState.UNCLASSIFIED -> WindowState.UNCLASSIFIED (Title: )
+[2025-11-02 16:26:13] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: Video)
+[2025-11-02 16:26:13] Window state change: unclassified -> whitelisted (title: Video)
+[2025-11-02 16:26:13] Reviews completed! Stopping popup.
+[2025-11-02 16:26:13] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:26:15] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: )
+[2025-11-02 16:26:15] starting spam
+[2025-11-02 16:26:15] Window state change: whitelisted -> unclassified (title: )
+[2025-11-02 16:26:15] Reviews completed! Stopping popup.
+[2025-11-02 16:26:15] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: Video)
+[2025-11-02 16:26:15] Window state change: unclassified -> whitelisted (title: Video)
+[2025-11-02 16:26:15] Reviews completed! Stopping popup.
+[2025-11-02 16:26:26] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: C:\Users\user\Documents\GitHub\camhack\.venv2\Scripts\python.exe)
+[2025-11-02 16:26:26] starting spam
+[2025-11-02 16:26:26] Window state change: whitelisted -> unclassified (title: C:\Users\user\Documents\GitHub\camhack\.venv2\Scripts\python.exe)
+[2025-11-02 16:26:26] Reviews completed! Stopping popup.
+[2025-11-02 16:26:41] Transition: WindowState.UNCLASSIFIED -> WindowState.UNCLASSIFIED (Title: Studio mode)
+[2025-11-02 16:26:42] Transition: WindowState.UNCLASSIFIED -> WindowState.UNCLASSIFIED (Title: )
+[2025-11-02 16:26:43] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:26:43] Window state change: unclassified -> whitelisted (title: User 1 - Anki)
+[2025-11-02 16:26:43] Reviews completed! Stopping popup.
+[2025-11-02 16:26:56] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: )
+[2025-11-02 16:26:56] starting spam
+[2025-11-02 16:26:56] Window state change: whitelisted -> unclassified (title: )
+[2025-11-02 16:26:56] Reviews completed! Stopping popup.
+[2025-11-02 16:26:57] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: Video)
+[2025-11-02 16:26:57] Window state change: unclassified -> whitelisted (title: Video)
+[2025-11-02 16:26:57] Reviews completed! Stopping popup.
+[2025-11-02 16:27:01] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:27:14] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: )
+[2025-11-02 16:27:14] starting spam
+[2025-11-02 16:27:14] Window state change: whitelisted -> unclassified (title: )
+[2025-11-02 16:27:14] Reviews completed! Stopping popup.
+[2025-11-02 16:27:14] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: Video)
+[2025-11-02 16:27:14] Window state change: unclassified -> whitelisted (title: Video)
+[2025-11-02 16:27:14] Reviews completed! Stopping popup.
+[2025-11-02 16:28:14] addon initialized
+[2025-11-02 16:28:14] [WinError -2147417850] Cannot change thread mode after it is set
+[2025-11-02 16:28:15] Starting EyeMonitor...
+[2025-11-02 16:28:15] === Eye Monitor Session Started ===
+[2025-11-02 16:28:15] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:28:15] Window state change: unclassified -> whitelisted (title: User 1 - Anki)
+[2025-11-02 16:28:15] Reviews completed! Stopping popup.
+[2025-11-02 16:28:17] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: Terminal)
+[2025-11-02 16:28:17] starting spam
+[2025-11-02 16:28:17] Window state change: whitelisted -> unclassified (title: Terminal)
+[2025-11-02 16:28:17] Reviews completed! Stopping popup.
+[2025-11-02 16:28:19] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:28:19] Window state change: unclassified -> whitelisted (title: User 1 - Anki)
+[2025-11-02 16:28:19] Reviews completed! Stopping popup.
+[2025-11-02 16:28:48] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: eye_monitor.py - camhack - Visual Studio Code)
+[2025-11-02 16:29:08] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: )
+[2025-11-02 16:29:08] starting spam
+[2025-11-02 16:29:08] Window state change: whitelisted -> unclassified (title: )
+[2025-11-02 16:29:08] Reviews completed! Stopping popup.
+[2025-11-02 16:29:09] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:29:09] Window state change: unclassified -> whitelisted (title: User 1 - Anki)
+[2025-11-02 16:29:09] Reviews completed! Stopping popup.
+[2025-11-02 16:29:09] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: Task Switching)
+[2025-11-02 16:29:10] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: eye_monitor.py - camhack - Visual Studio Code)
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] >>> EYES CLOSED DETECTED <<<
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:52] Vision output: 
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:52] >>> EYES OPEN DETECTED <<<
+[2025-11-02 16:29:52] Vision output: False
+[2025-11-02 16:29:52] Vision output: True
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: False
+[2025-11-02 16:29:53] Vision output: False
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: False
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:53] Vision output: 
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:53] Vision output: 
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:53] Vision output: 
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:53] Vision output: 
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:53] Vision output: 
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:53] Vision output: 
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:53] Vision output: 
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:53] Vision output: 
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:53] Vision output: 
+[2025-11-02 16:29:53] Vision output: True
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:53] Vision output: 
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:29:53] Vision output: 
+[2025-11-02 16:29:53] Vision output: Error during eye state detection: OpenCV(4.12.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4208: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+[2025-11-02 16:30:27] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: Video)
+[2025-11-02 16:30:47] Transition: WindowState.WHITELISTED -> WindowState.UNCLASSIFIED (Title: C:\Users\user\Documents\GitHub\camhack\.venv2\Scripts\python.exe)
+[2025-11-02 16:30:47] starting spam
+[2025-11-02 16:30:47] Window state change: whitelisted -> unclassified (title: C:\Users\user\Documents\GitHub\camhack\.venv2\Scripts\python.exe)
+[2025-11-02 16:30:47] Reviews completed! Stopping popup.
+[2025-11-02 16:30:49] Transition: WindowState.UNCLASSIFIED -> WindowState.UNCLASSIFIED (Title: )
+[2025-11-02 16:30:49] Transition: WindowState.UNCLASSIFIED -> WindowState.WHITELISTED (Title: Video)
+[2025-11-02 16:30:49] Window state change: unclassified -> whitelisted (title: Video)
+[2025-11-02 16:30:49] Reviews completed! Stopping popup.
+[2025-11-02 16:30:50] Transition: WindowState.WHITELISTED -> WindowState.WHITELISTED (Title: User 1 - Anki)
+[2025-11-02 16:30:52] === Eye Monitor Session Ended ===

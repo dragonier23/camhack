@@ -113,13 +113,14 @@ if __name__ == "__main__":
     controller = CameraController(cam)
     try:
         while True:
-            frameData = controller.getFrame()
-            print(triggerModel.eyesOpen(*frameData))
+            try:
+                frameData = controller.getFrame()
+                print(triggerModel.eyesOpen(*frameData))
 
-            if cv.waitKey(1) & 0xFF == ord('q'):
-                break
-    except cv.error:
-        pass
+                if cv.waitKey(1) & 0xFF == ord('q'):
+                    break
+            except Exception as e:
+                print(f"Error during eye state detection: {e}")
     finally:
         cam.release()
         cv.destroyAllWindows()

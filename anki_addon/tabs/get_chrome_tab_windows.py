@@ -1,5 +1,5 @@
 # pip install pywinauto
-from ..pywinauto import Desktop
+from pywinauto import Desktop
 import time
 import json
 import ctypes

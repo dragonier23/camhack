@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 
-_DIR = os.path.dirname(__file__)
+_DIR = "C:\\Users\\user\\Documents\\GitHub\\camhack\\anki_addon\\log_util"
 _LOG_FILE = os.path.join(_DIR, "..", "logs.txt")
 
 def log(message: str) -> None:

@@ -314,8 +314,8 @@ class PersistentReviewWindow(QWidget):
             self._position_timer.stop()
             self._position_timer = None
         self.close()
-        tmp = self.REQUIRED_REVIEWS
-        self.REQUIRED_REVIEWS = 0
+        # Reset distraction count for next session
+        self._distraction_count = 0
         mw.close()
     def _enforce_position(self) -> None:
         """Enforce window position and focus (called every second)."""
@@ -408,11 +408,10 @@ class PersistentReviewWindow(QWidget):
         log(f'Current reviews done: {curr_reviews}/{self.REQUIRED_REVIEWS}')
         
         # If user has completed required reviews, stop everything
-        if has_completed_reviews:
+        if has_completed_reviews and self.is_active:
             log('Reviews completed! Stopping popup.')
-            if self.is_active:
-                self.stop()
-                self._triggered_by_blacklist = False
+            self.stop()
+            self._triggered_by_blacklist = False
             return
         
         if curr_state == WindowState.BLACKLISTED:
